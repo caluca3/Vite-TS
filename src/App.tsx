@@ -8,7 +8,7 @@ function App() {
       <h3>Principal</h3>
       <ul>
         <li>
-          <Link to={"usuarios"}>Usuarios</Link>
+          <Link to={"posts/1"}>Posts</Link>
         </li>
       </ul>
       <Outlet></Outlet>
