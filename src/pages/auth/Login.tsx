@@ -1,22 +1,17 @@
-//mport React from "react";
-//
-//xport const Login = () => {
-// console.log("Hola mudno");
-// return (
-//   <>
-//     <div
-//       id="g_id_onload"
-//       data-client_id="113333846904-qolb1o8l304kk6v2vo1fmgg978v31umg.apps.googleusercontent.com"
-//       data-context="signin"
-//       data-login_uri="http://localhost:"
-//       data-itp_support="true"
-//     ></div>
-//   </>
-// );
-//;
 import React, { Component } from "react";
 
 export const Login = () => {
+  const googleSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    const url: string = "http://localhost:3001/api/auth/google";
+    await fetch(url)
+      .then((res: Response) => console.log(res))
+      .catch((err: Error) => console.log(err));
+    console.log(url);
+  };
+
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="p-3 flex bg-slate-300 rounded-md flex-col">
@@ -61,6 +56,15 @@ export const Login = () => {
               Sign Up
             </button>
           </div>
+          <div className=" ">
+            <button
+              type="submit"
+              className=" bg-blue-700 rounded px-4 py-2 mt-3"
+              onClick={googleSubmit}
+            >
+              Sign Up From GOOGLE
+            </button>
+          </div>
           <p className="forgot-password text-right">
             Already registered <a href="/sign-in">sign in?</a>
           </p>
@@ -70,5 +74,7 @@ export const Login = () => {
   );
 };
 
-//crear componente para renderizar los posts
-//Iniciar una sesion en el servidor
+//TODO: crear componente para renderizar los posts
+//TODO: Iniciar una sesion en el servidor
+//TODO: CRUD post
+//TODO: Iniciar sesion

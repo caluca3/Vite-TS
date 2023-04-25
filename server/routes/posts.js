@@ -2,7 +2,8 @@ import { Router } from "express";
 import { prisma } from "../utils/prismaClient.js";
 
 export const routerPost = Router();
-//  Obtener todas las categorias - publico
+//* Obtener todas las categorias - publico
+
 routerPost.get("/:userId", async (req, res = response) => {
   const { userId } = req.params;
 
@@ -15,6 +16,16 @@ routerPost.get("/:userId", async (req, res = response) => {
   res.json({
     posts,
   });
+});
+
+routerPost.post("/upload", function (req, res) {
+  console.log("Hola");
+
+  if (!req.files) {
+    return res.status(400).send("No files were uploaded.");
+  }
+
+  res.json({ code: 200 });
 });
 
 routerPost.post("/create", async (req, res = response) => {

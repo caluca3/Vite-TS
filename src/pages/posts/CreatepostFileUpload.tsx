@@ -2,17 +2,15 @@ import React from "react";
 import { ActionFunctionArgs, json, useActionData } from "react-router";
 import { addPosts } from "../../helpers/posts/POST";
 import { Form } from "react-router-dom";
+import { FileAdd } from "../../helpers/posts/FILE";
 
 export const action = async ({ params, request }: ActionFunctionArgs) => {
   let formData = await request.formData();
-
-  const title = formData.get("Title") as string;
-  const content = formData.get("Contenido") as string;
-  const newPost = await addPosts({ title, content });
+  const newPost = await FileAdd(formData);
   return json(newPost);
 };
 
-const AggPost = () => {
+const CreateFile = () => {
   const data = useActionData();
 
   React.useEffect(() => {
@@ -20,13 +18,11 @@ const AggPost = () => {
   }, [data]);
 
   return (
-    <Form method="post">
-      <input type="text" name="Title" placeholder="Titulo" />
-      <input type="text" name="Contenido" placeholder="Contenido" />
+    <Form method="post" encType="multipart/form-data">
       <input type="file" name="file" />
       <button type="submit">Save</button>
     </Form>
   );
 };
 
-export default AggPost;
+export default CreateFile;
