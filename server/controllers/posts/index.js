@@ -1,44 +1,63 @@
-import {} from '@prisma/client'
-import { prisma } from "../../utils/prismaClient";
+//import {Post} from '@prisma/client'
+import {prisma} from '../../utils/prismaClient.js'
 
-class UserController {
-  async findUser(userId) {
-    return await prisma.user.findUnique({
+
+class PostController {
+  async findPost(userId) {
+    return await prisma.post.findUnique({
       where: {
         id: userId,
       },
     });
   }
 
-  async deleteUser(userId) {
+  async deletePost(userId) {
     const user = this.findUser(userId);
 
     if (!user) throw new Error("No user in the request");
 
-    return await prisma.user.delete({
+    return await prisma.post.delete({
       where: {
         id: userId,
       },
     });
   }
 
-  async findOrCreate(email, name) {
-    const user = await prisma.user.findUnique({
+  async findOrCreate(id,title) {
+    const post = await prisma.post.findUnique({
       where: {
-        email,
+        id,
+        title
       },
     });
 
-    if (!user)
-      return await prisma.user.create({
+    if (!post)
+      return await prisma.post.create({
         data: {
-          email,
-          name,
+          id,
+          title,
+          content,
+          images,
         },
       });
 
-    return user;
+    return post;
+  }
+
+  async updatePost(id,title,content){
+    const post = await prisma.post.update({
+      where:{
+        id,
+        title,
+        content
+      }
+    })
+    if (!post) {
+      console.log('Not find post');
+    }
+
+    return post;
   }
 }
 
-export const UserService = new UserController();
+export const PostServices = new PostController();

@@ -1,4 +1,6 @@
 import { Router } from "express";
+
+import { PostServices } from "../controllers/posts/index.js";
 import { prisma } from "../utils/prismaClient.js";
 
 export const routerPost = Router();
@@ -6,16 +8,8 @@ export const routerPost = Router();
 
 routerPost.get("/:userId", async (req, res = response) => {
   const { userId } = req.params;
-
-  const posts = await prisma.post.findMany({
-    where: {
-      authorId: +userId,
-    },
-  });
-
-  res.json({
-    posts,
-  });
+  const  posts = PostServices.findPost(userId)
+  res.json({posts});
 });
 
 routerPost.post("/upload", function (req, res) {
@@ -31,6 +25,7 @@ routerPost.post("/upload", function (req, res) {
 routerPost.post("/create", async (req, res = response) => {
   const { title, content } = req.body;
   const post = await prisma.post.create({
+  //const posts = PostController.findOrCreate(id,title)
     data: {
       title,
       content,
@@ -52,17 +47,12 @@ routerPost.get("/post/:id", async (req, res = response) => {
 routerPost.put("/edit/:id", async (req, res) => {
   const { id } = req.params;
   const { title, content } = req.body;
-  const post = await prisma.post.update({
-    where: { id: +id },
-    data: { published: true, content, title },
-  });
+  const post = PostServices.updatePost(id,title,content)
   res.json({ post });
 });
 
 routerPost.delete("/delete/:id", async (req, res) => {
   const { id } = req.params;
-  const post = await prisma.post.delete({
-    where: { id: +id },
-  });
+  const post = PostServices.deletePost(id)
   res.json({ post });
 });

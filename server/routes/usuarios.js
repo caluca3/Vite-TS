@@ -7,53 +7,44 @@ export const routerUser = Router();
 
 routerUser.get("/:userId", async (req, res = response) => {
   const { userId } = req.params;
-
-  const posts = await prisma.post.findMany({
-    where: {
-      authorId: +userId,
-    },
-  });
-
-  res.json({
-    posts,
-  });
+  const user = UserService.findUser(userId)
+  res.json({user});
 });
 
 routerUser.post("/create", async (req, res = response) => {
-  const { title, content } = req.body;
-
-  const post = await prisma.user.create({});
-  res.json({ post });
+  const { email,name } = req.body;
+  const user = UserService.findOrCreate(email,name)
+  res.json({ user });
 });
 
-routerUser.get("/post/:id", async (req, res = response) => {
-  const { id } = req.params;
-  const post = await prisma.post.findUnique({
-    where: { id: +id },
-  });
-  res.json({ post });
-});
+//routerUser.get("/post/:id", async (req, res = response) => {
+//  const { id } = req.params;
+//  const post = await prisma.user.findUnique({
+//    where: { id: +id },
+//  });
+//  res.json({ post });
+//});
 
-routerUser.put("/edit/:id", async (req, res) => {
-  const { id } = req.params;
-  const { title, content } = req.body;
-  const post = await prisma.post.update({
-    where: { id: +id },
-    data: { published: true, content, title },
-  });
-  res.json({ post });
-});
+//routerUser.put("/edit/:id", async (req, res) => {
+//  const { id } = req.params;
+//  const { title, content } = req.body;
+//  const post = await prisma.user.update({
+//    where: { id: +id },
+//    data: { published: true, content, title },
+//  });
+//  res.json({ post });
+//});
 
 routerUser.delete("/delete/:id", async (req, res) => {
   const { id } = req.params;
-  UserService.deleteUser(id);
+  const user = UserService.deleteUser(id);
 
-  res.json({ post });
+  res.json({ user });
 });
 
 //* modificar routerPOST crud usuarios
-//! TODO: Crear y separar controladores Usuarios
-//TODO: Crear y separar controladores POSTS
+//* TODO: Crear y separar controladores Usuarios
+//* TODO: Crear y separar controladores POSTS
 //TODO: Iniciar sesion
 //TODO: Crear DTO
 //TODO: Subir el archivo correctamente
